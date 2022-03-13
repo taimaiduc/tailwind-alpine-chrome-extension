@@ -1,31 +1,34 @@
-<html>
-    <head>
-        <link rel="stylesheet" type="text/css" href="./popup.css">
-    </head>
-    <body>
-        <div class="p-6 min-w-2xl h-64">
-            <h1 class="text-gray-500 text-2xl">Hello Web Extension</h1>
-            <p class="py-2 text-lg tracking-wide">
-                Update me in <span class="inline-block bg-gray-100 rounded-sm text-sm p-1 leading-none whitespace-no-wrap text-purple-600 font-mono align-baseline">`src/popup/index.html`</span>
-            </p>
-            <hr />
-            <div class="py-2" x-data="{ open: false }">
-                <button
-                    class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
-                    @click="open = true"
-                >
-                    Test Alpine
-                </button>
+<html lang="" style="overflow-x: hidden">
+<head>
+    <link rel="stylesheet" type="text/css" href="./popup.css">
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+    <script src="https://unpkg.com/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://unpkg.com/prismjs/prism.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.22.0/components/prism-json.min.js"></script>
+</head>
 
-                <div
-                    class="mt-4 bg-gray-100 text-center rounded-sm"
-                    x-show="open"
-                    @click.away="open = false"
-                >
-                    <div class="w-full text-4xl text-teal-500 p-4">Great Scott!</div>
-                </div>
+<body class="p-3" style="min-width: 800px; min-height: 500px; overflow: hidden">
+<div id="app">
+    <button @click="delLogs()" type="button"
+            class="z-10 right-24 fixed inline-flex items-center px-2.5 py-1.5 border border-gray-300 text-xs leading-4 font-medium rounded text-white bg-green-700 hover:bg-green-900 focus:outline-none transition ease-in-out duration-150">
+        Delete
+    </button>
+    <button id="loadLogs" @click="getLogs()" type="button"
+            class="z-10 right-5 fixed inline-flex items-center px-2.5 py-1.5 border border-gray-300 text-xs leading-4 font-medium rounded text-white bg-green-700 hover:bg-green-900 focus:outline-none transition ease-in-out duration-150">
+        Reload
+    </button>
+    <div>
+        <div v-for="line,key in logs" :id="key === 0 ? 'output' : 'output' + key" v-bind:key="line.id"
+             class="border-b border-b-2 border-b-gray-900 mb-2" v-bind:class="{ 'active': key === 0}">
+            <div class="mr-10 cursor-pointer px-6 py-3 whitespace-normal border-b border-gray-200 text-sm leading-5 font-medium text-gray-900 ">
+                <p class="relative mb-1"><b
+                        class=" inline-flex items-center px-3 py-0.5 rounded-full text-xs font-medium leading-5 bg-green-200"><span
+                        class="dot"></span>{{line.time}}</b></p>
+                <pre v-html="highlighter(line.log,key)"></pre>
             </div>
         </div>
-        <script type="text/javascript" src="./popup.dist.js"></script>
-    </body>
+    </div>
+</div>
+<script type="text/javascript" src="./popup.dist.js"></script>
+</body>
 </html>

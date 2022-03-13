@@ -6,18 +6,28 @@
   "browser_action": {
     "default_popup": "./dist/popup.html",
     "default_title": "Open the popup",
-    "default_icon":"./dist/icons/icon-16.png"
+    "default_icon": "./dist/icons/icon-16.png"
   },
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "content_security_policy": "script-src 'self' 'unsafe-eval' https://js.pusher.com https://unpkg.com https://cdnjs.cloudflare.com; object-src 'self'",
+  "permissions": [
+    "notifications",
+    "storage"
+  ],
   "content_scripts": [
     {
-      "js": ["dist/content.dist.js"],
-      "css": ["dist/content.css"],
-      "matches": ["https://*/*"]
+      "js": [
+        "dist/content.dist.js"
+      ],
+      "css": [
+        "dist/content.css"
+      ],
+      "matches": [
+        "https://*/*"
+      ]
     }
   ],
   "background": {
-    "scripts": ["dist/background.dist.js"]
+    "page": "dist/background.html"
   },
   "options_ui": {
     "page": "dist/options.html",
